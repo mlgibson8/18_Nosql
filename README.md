@@ -3,7 +3,7 @@
 ## Description
   a social media backend for users, thoughts and reactions
 ## Screenshots
-![Screenshot]( https://github.com/mlgibson8/18_Nosql)
+![Screenshot](https://github.com/mlgibson8/18_Nosql/blob/main/utils/18.png)
 ## Table of Contents
 * [Installation](#installation)
 * [Features](#features)
