@@ -30,5 +30,5 @@
 ## License
     
 ## Deployed Application URL
-![link](https://github.com/mlgibson8/18_Nosql)
+(https://github.com/mlgibson8/18_Nosql)
 

@@ -6,8 +6,8 @@ const mongoose = require('mongoose');
 
 const cwd = process.cwd();
 const user = require('./models/user');
-const { env } = require('process');
-mongoose.connect('mongodb://localhost/socialDB')
+//const { env } = require('process');
+//mongoose.connect('mongodb:///127.0.0.1:27017/socialDB')
 
 const PORT = process.env.PORT || 3001;
 const app = express();
