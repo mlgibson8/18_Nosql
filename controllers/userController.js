@@ -53,7 +53,11 @@ module.exports = {
                 { _id: req.params.userId },
                 { $set: req.body },
                 { runValidators: true, new: true }
-            )
+            );
+            if (!user) {
+                return res.status(404).json({ message: 'No user found with this id!' });
+            }
+            res.json(user);
         }
         catch (err) {
             res.status(500).json(err);
