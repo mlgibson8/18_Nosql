@@ -7,7 +7,7 @@ const userSchema = new Schema({
     username:{
         type:String,
         require:true,
-        unique:true,
+        unique:false,
         trim:true
     },
     email:{
@@ -21,12 +21,12 @@ const userSchema = new Schema({
        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
     thoughts:[{
-        type:Schema.Types.ObjectId,
-        ref:'Thoughts'
+        type: Schema.Types.ObjectId,
+        ref:'thoughts'
     }],
     friends:[{
-        type:Schema.Types.ObjectId,
-        ref:'Friends',
+        type: Schema.Types.ObjectId,
+        ref:'friends',
     }
     ],
 

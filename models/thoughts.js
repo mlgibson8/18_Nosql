@@ -9,6 +9,7 @@ const thoughtsSchema = new Schema(
         require:true,              
         minlength:1,
         maxlength:280,
+        unique:false,
     },
     createdAt:{
         type:Date,
@@ -18,9 +19,10 @@ const thoughtsSchema = new Schema(
     },
     username:{
         type:String,
-        require:true,  
-        unique:false,      
-            },
+        require:true, 
+        unique:false, 
+    },
+       
     reactions:  
      // Array of nested documents created with the reactionSchema
     [reactionSchema],

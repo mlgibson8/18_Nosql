@@ -1,4 +1,4 @@
-const {Thoughts , User, Reactions } = require('../models');
+const {Thoughts, User, Reactions } = require('../models');
 
 module.exports = {
     // get all thoughts
@@ -27,18 +27,29 @@ module.exports = {
     async createThoughts(req, res) {
         try {
             const thoughts = await Thoughts.create(req.body);
-                     res.json(thoughts);
+            const user = await User.findOneAndUpdate(
+                { _id: req.body.userId },
+                { $push: { thoughts: thoughts._id } },
+                { new: true }
+            )
+            if (!user) {
+                return res.status(404).json({ message: 'No user found with this id!' });
+            }
+              res.status(200).json(thoughts);
                  } catch (err) {
-            res.status(501).json(err,{message:"error"});
+            res.status(501).json(err, 'error');
         }
     },
     // update a thought by its _id
     async updateThoughts(req, res) {
         try {
-            const thoughts = await Thoughts.findOne({ _id: req.params.thoughtsId })
+            const thoughts = await Thoughts.findOneAndUpdate({ _id: req.params.thoughtsId }, { $set: req.body }, { runValidators: true, new: true });
+            if (!thoughts) {
+                return res.status(404).json({ message: 'No thought found with this id!' });
+             }
             res.json(thoughts)
         } catch (err) {
-            res.status(500).json(err);
+            res.status(501).json(err);
         }
     },
     // delete a thought by its _id
@@ -56,7 +67,7 @@ module.exports = {
             if (!user) {
                 return res.status(404).json({ message: 'No user found with this id!' });
             }
-            res.json(thoughts)
+            res.json(thoughts);
         } catch (err) {
             res.status(502).json(err);
         }
