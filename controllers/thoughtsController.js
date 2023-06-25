@@ -1,9 +1,10 @@
-const { User, Thoughts } = require('../models');
+const {Thoughts , User, Reactions } = require('../models');
+
 module.exports = {
     // get all thoughts
     async getThoughts(req, res) {
         try {
-            const thoughts = await thoughts.find();
+            const thoughts = await Thoughts.find();
             res.json(thoughts);
         } catch (err) {
             res.status(500).json(err);
@@ -12,25 +13,29 @@ module.exports = {
     // get a single thought by its _id
     async getSingleThoughts(req, res) {
         try {
-            const thoughts = await thoughts.findOne({ _id: req.params.thoughtsId })
-            res.json(thoughts)
-        } catch (err) {
+            const thoughts = await Thoughts.findOne({ _id: req.params.thoughtsId })
+            .select('-__v');
+            if (!thoughts) {
+                return res.status(404).json({ message: 'No thought found with this id!' });
+            }
+            res.json(thoughts);        } 
+        catch (err) {
             res.status(500).json(err);
         }
     },
     // create a new thought 
     async createThoughts(req, res) {
         try {
-            const thoughts = await thoughts.create(req.body);
-            res.json(thoughts);
-        } catch (err) {
-            res.status(500).json(err);
+            const thoughts = await Thoughts.create(req.body);
+                     res.json(thoughts);
+                 } catch (err) {
+            res.status(501).json(err,{message:"error"});
         }
     },
     // update a thought by its _id
     async updateThoughts(req, res) {
         try {
-            const thoughts = await thoughts.findOne({ _id: req.params.thoughtsId })
+            const thoughts = await Thoughts.findOne({ _id: req.params.thoughtsId })
             res.json(thoughts)
         } catch (err) {
             res.status(500).json(err);
@@ -39,16 +44,27 @@ module.exports = {
     // delete a thought by its _id
     async deleteThoughts(req, res) {
         try {
-            const thoughts = await thoughts.findOne({ _id: req.params.thoughtsId })
+            const thoughts = await Thoughts.findOneAndRemove({ _id: req.params.thoughtsId });
+            if (!thoughts) {
+                return res.status(404).json({ message: 'No thought found with this id!' });
+            }
+            const user = await User.findOneAndUpdate(
+                { thoughts: req.params.thoughtsId },
+                { $pull: { thoughts: req.params.thoughtsId } },
+                { new: true }
+            );
+            if (!user) {
+                return res.status(404).json({ message: 'No user found with this id!' });
+            }
             res.json(thoughts)
         } catch (err) {
-            res.status(500).json(err);
+            res.status(502).json(err);
         }
     },
     // add a reaction to a thought
     async addReaction(req, res) {
         try {
-            const thoughts = await thoughts.findOne({ _id: req.params.thoughtsId })
+            const thoughts = await Thoughts.findOne({ _id: req.params.thoughtsId })
             res.json(thoughts)
         } catch (err) {
             res.status(500).json(err);
@@ -57,7 +73,7 @@ module.exports = {
     // remove a reaction from a thought
     async deleteReaction(req, res) {
         try {
-            const thoughts = await thoughts.findOne({ _id: req.params.thoughtsId })
+            const thoughts = await Thoughts.findOne({ _id: req.params.thoughtsId })
             res.json(thoughts)
         } catch (err) {
             res.status(500).json(err);
