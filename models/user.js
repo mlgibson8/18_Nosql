@@ -7,7 +7,7 @@ const userSchema = new Schema({
     username:{
         type:String,
         require:true,
-        unique:false,
+        unique:true,
         trim:true
     },
     email:{
@@ -22,11 +22,13 @@ const userSchema = new Schema({
     },
     thoughts:[{
         type: Schema.Types.ObjectId,
-        ref:'thoughts'
+        ref:'thoughts',
+        unique:false
     }],
     friends:[{
         type: Schema.Types.ObjectId,
         ref:'friends',
+        unique:false
     }
     ],
 
