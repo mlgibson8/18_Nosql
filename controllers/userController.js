@@ -71,11 +71,14 @@ module.exports = {
                 { $addToSet: { friends: req.params.friendId } },
                 { runValidators: true, new: true }
             );
+       //     const friend = await User.findOneAndUpdate(
+        //        { _id: req.params.f) },
+      //          { $addToSet: { friends: req.params.userId } } );
+                res.json(user);
             if (!user) {
                 return res.status(404).json({ message: 'No user found with this id!' });
             }
-            res.json(user);
-        } catch (err) {
+                   } catch (err) {
             res.status(500).json(err);
         }
     },
